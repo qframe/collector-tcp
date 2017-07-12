@@ -1,5 +1,6 @@
 # TCP from a container
 
+**UPDATE NEEDED after refactoring!**
 
 ```bash
 $ docker run -ti --name qframe-collector-tcp --rm -e SKIP_ENTRYPOINTS=1 \

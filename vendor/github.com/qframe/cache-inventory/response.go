@@ -1,4 +1,4 @@
-package qframe_inventory
+package qcache_inventory
 
 import (
 	"github.com/docker/docker/api/types"

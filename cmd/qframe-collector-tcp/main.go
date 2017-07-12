@@ -7,9 +7,9 @@ import (
 	"github.com/zpatrick/go-config"
 	"github.com/qnib/qframe-types"
 	"github.com/qframe/collector-tcp"
-	"github.com/qnib/qframe-collector-docker-events/lib"
-	"github.com/qnib/qframe-filter-inventory/lib"
 	"github.com/docker/docker/api/types"
+	"github.com/qframe/cache-inventory"
+	"github.com/qframe/collector-docker-events"
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 )
 
 func Run(qChan qtypes.QChan, cfg config.Config, name string) {
-	p, _ := qframe_collector_tcp.New(qChan, cfg, name)
+	p, _ := qcollector_tcp.New(qChan, cfg, name)
 	p.Run()
 }
 
@@ -39,18 +39,18 @@ func main() {
 		},
 	)
 	// Start docker-events
-	pde, err := qframe_collector_docker_events.New(qChan, *cfg, "docker-events")
+	pde, err := qcollector_docker_events.New(qChan, *cfg, "docker-events")
 	if err != nil {
 		log.Printf("[EE] Failed to create collector: %v", err)
 		return
 	}
 	go pde.Run()
-	pfi := qframe_filter_inventory.New(qChan, *cfg, "inventory")
+	pci := qcache_inventory.New(qChan, *cfg, "inventory")
 	if err != nil {
 		log.Printf("[EE] Failed to create filter: %v", err)
 		return
 	}
-	go pfi.Run()
+	go pci.Run()
 	time.Sleep(2*time.Second)
 	p, err := qcollector_tcp.New(qChan, *cfg, "tcp")
 	if err != nil {

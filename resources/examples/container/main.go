@@ -7,11 +7,11 @@ import (
 
 	"github.com/zpatrick/go-config"
 	"github.com/qnib/qframe-types"
-	"github.com/qnib/qframe-collector-tcp/lib"
+	"github.com/qframe/collector-tcp"
 )
 
 func Run(qChan qtypes.QChan, cfg config.Config, name string) {
-	p, _ := qframe_collector_tcp.New(qChan, cfg, name)
+	p, _ := qcollector_tcp.New(qChan, cfg, name)
 	p.Run()
 }
 
@@ -27,7 +27,7 @@ func main() {
 			config.NewStatic(cfgMap),
 		},
 	)
-	p, err := qframe_collector_tcp.New(qChan, *cfg, "test")
+	p, err := qcollector_tcp.New(qChan, *cfg, "test")
 	if err != nil {
 		log.Printf("[EE] Failed to create collector: %v", err)
 		return

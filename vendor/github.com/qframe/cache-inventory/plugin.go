@@ -1,4 +1,4 @@
-package qframe_filter_inventory
+package qcache_inventory
 
 import (
 	"C"
@@ -8,24 +8,23 @@ import (
 
 	"github.com/qnib/qframe-types"
 	"github.com/qnib/qframe-utils"
-	"github.com/qnib/qframe-inventory/lib"
 )
 
 const (
-	version = "0.1.4"
-	pluginTyp = qtypes.FILTER
+	version = "0.3.0"
+	pluginTyp = qtypes.CACHE
 	pluginPkg = "inventory"
 )
 
 type Plugin struct {
 	qtypes.Plugin
-	Inventory qframe_inventory.Inventory
+	Inventory Inventory
 }
 
 func New(qChan qtypes.QChan, cfg *config.Config, name string) (Plugin, error) {
 	return Plugin{
 		Plugin: qtypes.NewNamedPlugin(qChan, cfg, pluginTyp, pluginPkg, name, version),
-		Inventory: qframe_inventory.NewInventory(),
+		Inventory: NewInventory(),
 	}, nil
 }
 
@@ -49,8 +48,8 @@ func (p *Plugin) Run() {
 				if ce.Event.Type == "container" && ce.Event.Action == "start" {
 					p.Inventory.SetItem(ce.Container.ID, ce.Container)
 				}
-			case qframe_inventory.ContainerRequest:
-				req := val.(qframe_inventory.ContainerRequest)
+			case ContainerRequest:
+				req := val.(ContainerRequest)
 				p.Log("trace", fmt.Sprintf("Received InventoryRequest for %v", req))
 				p.Inventory.ServeRequest(req)
 			}

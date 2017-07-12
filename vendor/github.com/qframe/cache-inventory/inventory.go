@@ -1,4 +1,4 @@
-package qframe_inventory
+package qcache_inventory
 
 import (
 	"errors"
@@ -6,10 +6,6 @@ import (
 	"fmt"
 	"github.com/docker/docker/api/types"
 
-)
-
-const (
-	version = "0.2.1"
 )
 
 type Inventory struct {

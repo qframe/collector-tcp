@@ -11,7 +11,7 @@ import (
 
 	"github.com/zpatrick/go-config"
 	"github.com/qnib/qframe-types"
-	"github.com/qnib/qframe-inventory/lib"
+	"github.com/qframe/cache-inventory"
 )
 
 const (
@@ -42,7 +42,7 @@ func (p *Plugin) HandleInventoryRequest(qm qtypes.Message) {
 		return
 	}
 	p.Log("trace", fmt.Sprintf("Got msg from %s: %s", qm.KV["host"], qm.Message))
-	req := qframe_inventory.NewIPContainerRequest(strings.Join(qm.SourcePath,","), qm.KV["host"])
+	req := qcache_inventory.NewIPContainerRequest(strings.Join(qm.SourcePath,","), qm.KV["host"])
 	tout := p.CfgIntOr("inventory-timeout-ms", 2000)
 	timeout := time.NewTimer(time.Duration(tout)*time.Millisecond).C
 	p.QChan.Data.Send(req)

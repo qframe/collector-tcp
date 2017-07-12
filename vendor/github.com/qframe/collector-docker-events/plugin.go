@@ -1,4 +1,4 @@
-package qframe_collector_docker_events
+package qcollector_docker_events
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/zpatrick/go-config"
 	"golang.org/x/net/context"
 
-	"github.com/qnib/qframe-inventory/lib"
+	"github.com/qframe/cache-inventory"
 	"github.com/qnib/qframe-types"
 	"strings"
 	"time"
@@ -52,7 +52,7 @@ func (p *Plugin) Run() {
 		p.Log("info", fmt.Sprintf("Connected to '%s' / v'%s'", p.info.Name, p.info.ServerVersion))
 	}
 	// Inventory Init
-	inv := qframe_inventory.NewInventory()
+	inv := qcache_inventory.NewInventory()
 	// Fire events for already started containers
 	cnts, _ := engineCli.ContainerList(ctx, types.ContainerListOptions{})
 	for _, cnt := range cnts {

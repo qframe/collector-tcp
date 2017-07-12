@@ -1,4 +1,4 @@
-package qframe_inventory
+package qcache_inventory
 
 /******************** Inventory Request
  Sends a query for a key or an IP and provides a back-channel, so that the requesting partner can block on the request
