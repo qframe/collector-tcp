@@ -9,9 +9,11 @@ import (
 	"net"
 	"reflect"
 
-	"github.com/zpatrick/go-config"
-	"github.com/qnib/qframe-types"
 	"github.com/qframe/cache-inventory"
+	"github.com/qframe/types/plugin"
+	"github.com/qframe/types/qchannel"
+	"github.com/zpatrick/go-config"
+	"github.com/qframe/types/messages"
 )
 
 const (
@@ -21,28 +23,30 @@ const (
 )
 
 type Plugin struct {
-	qtypes.Plugin
+	*qtypes_plugin.Plugin
 	buffer chan interface{}
 }
 
-func New(qChan qtypes.QChan, cfg *config.Config, name string) (Plugin, error) {
+
+
+func New(qChan qtypes_qchannel.QChan, cfg *config.Config, name string) (Plugin, error) {
 	var err error
 	p := Plugin{
-		Plugin: qtypes.NewNamedPlugin(qChan, cfg, pluginTyp, pluginPkg, name, version),
+		Plugin: qtypes_plugin.NewNamedPlugin(qChan, cfg, pluginTyp, pluginPkg, name, version),
 		buffer: make(chan interface{}, 1000),
 	}
 	return p, err
 }
 
-func (p *Plugin) HandleInventoryRequest(qm qtypes.Message) {
-	if _, ok := qm.KV["host"]; !ok {
+func (p *Plugin) HandleInventoryRequest(qm qtypes_messages.Message) {
+	if _, ok := qm.Tags["host"]; !ok {
 		p.Log("error", fmt.Sprintf("Got msg '%s' without host key!", qm))
 		qm.SourceSuccess = false
 		p.QChan.Data.Send(qm)
 		return
 	}
-	p.Log("trace", fmt.Sprintf("Got msg from %s: %s", qm.KV["host"], qm.Message))
-	req := qcache_inventory.NewIPContainerRequest(strings.Join(qm.SourcePath,","), qm.KV["host"])
+	p.Log("trace", fmt.Sprintf("Got msg from %s: %s", qm.Tags["host"], qm.Message))
+	req := qcache_inventory.NewIPContainerRequest(strings.Join(qm.SourcePath,","), qm.Tags["host"])
 	tout := p.CfgIntOr("inventory-timeout-ms", 2000)
 	timeout := time.NewTimer(time.Duration(tout)*time.Millisecond).C
 	p.QChan.Data.Send(req)
@@ -52,11 +56,13 @@ func (p *Plugin) HandleInventoryRequest(qm qtypes.Message) {
 			p.Log("error", resp.Error.Error())
 			qm.SourceSuccess = false
 		} else {
-			qm.Container = resp.Container
-			p.Log("trace", fmt.Sprintf("Got InventoryResponse: ContainerName:%s | Image:%s", qm.GetContainerName(), qm.Container.Config.Image))
+			cm := qtypes_messages.NewContainerMessage(qm.Base, resp.Container, qm.Message)
+			p.Log("trace", fmt.Sprintf("Got InventoryResponse: ContainerName:%s | Image:%s", cm.GetContainerName(), cm.Container.Config.Image))
+			p.QChan.Data.Send(cm)
+			return
 		}
 	case <- timeout:
-		p.Log("debug", fmt.Sprintf("Experience timeout for IP %s... continue w/o Container info (SourcePath: %s)", qm.KV["host"], strings.Join(qm.SourcePath, ",")))
+		p.Log("debug", fmt.Sprintf("Experience timeout for IP %s... continue w/o Container info (SourcePath: %s)", qm.Tags["host"], strings.Join(qm.SourcePath, ",")))
 	}
 	p.QChan.Data.Send(qm)
 }
@@ -81,9 +87,9 @@ func (p *Plugin) Run() {
 			switch msg.(type) {
 			case IncommingMsg:
 				im := msg.(IncommingMsg)
-				base := qtypes.NewTimedBase("tcp", time.Now())
-				qm := qtypes.NewMessage(base, p.Name, qtypes.MsgTCP, im.Msg)
-				qm.KV["host"] = im.Host
+				base := qtypes_messages.NewTimedBase("tcp", time.Now())
+				qm := qtypes_messages.NewMessage(base, im.Msg)
+				qm.Tags["host"] = im.Host
 				go p.HandleInventoryRequest(qm)
 			default:
 				p.Log("warn", fmt.Sprintf("Unkown data type: %s", reflect.TypeOf(msg)))

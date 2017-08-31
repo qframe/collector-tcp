@@ -10,21 +10,17 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/qframe/cache-inventory"
 	"github.com/qframe/collector-docker-events"
+	"github.com/qframe/types/qchannel"
 )
 
 const (
 	dockerHost = "unix:///var/run/docker.sock"
-	dockerAPI = "v1.29"
+	dockerAPI = "v1.30"
 )
-
-func Run(qChan qtypes.QChan, cfg config.Config, name string) {
-	p, _ := qcollector_tcp.New(qChan, cfg, name)
-	p.Run()
-}
 
 
 func main() {
-	qChan := qtypes.NewQChan()
+	qChan := qtypes_qchannel.NewQChan()
 	qChan.Broadcast()
 	cfgMap := map[string]string{
 		"log.level": "info",
@@ -45,7 +41,7 @@ func main() {
 		return
 	}
 	go pde.Run()
-	pci := qcache_inventory.New(qChan, *cfg, "inventory")
+	pci, err := qcache_inventory.New(qChan, *cfg, "inventory")
 	if err != nil {
 		log.Printf("[EE] Failed to create filter: %v", err)
 		return
