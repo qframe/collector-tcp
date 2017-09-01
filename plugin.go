@@ -87,7 +87,7 @@ func (p *Plugin) Run() {
 			switch msg.(type) {
 			case IncommingMsg:
 				im := msg.(IncommingMsg)
-				base := qtypes_messages.NewTimedBase("tcp", time.Now())
+				base := qtypes_messages.NewTimedBase(p.Name, time.Now())
 				qm := qtypes_messages.NewMessage(base, im.Msg)
 				qm.Tags["host"] = im.Host
 				go p.HandleInventoryRequest(qm)
