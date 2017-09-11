@@ -3,7 +3,6 @@ package qcollector_tcp
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"strings"
 	"time"
 	"net"
