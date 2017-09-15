@@ -13,6 +13,7 @@ import (
 	"github.com/qframe/types/qchannel"
 	"github.com/zpatrick/go-config"
 	"github.com/qframe/types/messages"
+	"io"
 )
 
 const (
@@ -127,6 +128,9 @@ func (p *Plugin) handleRequest(conn net.Conn) {
 	buf := make([]byte, 1048576)
 	// Read the incoming connection into the buffer.
 	_, err := conn.Read(buf)
+	if err == io.EOF {
+		return
+	}
 	if err != nil {
 		fmt.Println("Error reading:", err.Error())
 	} else {
@@ -141,7 +145,9 @@ func (p *Plugin) handleRequest(conn net.Conn) {
 			}
 		}
 		im := IncommingMsg{
-			Msg: string(buf[:n-1]),
+			// TODO: Is -1 wrong here?
+			//Msg: string(buf[:n-1]),
+			Msg: string(buf[:n]),
 			Host: host,
 		}
 		p.Log("trace", fmt.Sprintf("Received Raw TCP message '%s' from '%s'", im.Msg, im.Host))
