@@ -4,10 +4,11 @@ import (
 	"time"
 	"crypto/sha1"
 	"fmt"
+	"github.com/qframe/types/messages"
 )
 
 const (
-	version = "0.5.11"
+	version = "0.5.12"
 )
 
 type Base struct {
@@ -22,6 +23,18 @@ type Base struct {
 
 func NewBase(src string) Base {
 	return NewTimedBase(src, time.Now())
+}
+
+func NewBaseFromOldBase(src string, b Base) qtypes_messages.Base {
+	return qtypes_messages.Base {
+		BaseVersion: b.BaseVersion,
+		ID: b.ID,
+		Time: b.Time,
+		SourceID: b.SourceID,
+		SourcePath: append(b.SourcePath, src),
+		SourceSuccess: b.SourceSuccess,
+		Tags: b.Data,
+	}
 }
 
 func NewTimedBase(src string, t time.Time) Base {

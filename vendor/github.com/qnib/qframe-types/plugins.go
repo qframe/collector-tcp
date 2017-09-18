@@ -15,6 +15,7 @@ const (
 	FILTER = "filter"
 	COLLECTOR = "collector"
 	HANDLER = "handler"
+	CACHE = "cache"
 )
 
 type Plugin struct {

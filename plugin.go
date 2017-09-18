@@ -61,6 +61,7 @@ func (p *Plugin) HandleInventoryRequest(qm qtypes_messages.Message) {
 			qm.SourceSuccess = false
 		} else {
 			cm := qtypes_messages.NewContainerMessage(qm.Base, resp.Container, qm.Message)
+			cm.AddEngineInfo(resp.Engine)
 			p.Log("trace", fmt.Sprintf("Got InventoryResponse: ContainerName:%s | Image:%s", cm.GetContainerName(), cm.Container.Config.Image))
 			p.QChan.Data.Send(cm)
 			return
