@@ -461,44 +461,44 @@
 		{
 			"checksumSHA1": "ZokxRO/FavchTs9BrbmiCZNrzO4=",
 			"path": "github.com/qframe/types/constants",
-			"revision": "b843ff03d4a00a1482c235726f57a303aaa22883",
-			"revisionTime": "2017-09-18T08:02:29Z"
+			"revision": "26b2dac9b669dd5c130550dfe0f76b6714dfebe1",
+			"revisionTime": "2017-09-18T11:38:17Z"
 		},
 		{
 			"checksumSHA1": "qTxHjY8oFOfYzlsu582xuqckC50=",
 			"path": "github.com/qframe/types/docker-events",
-			"revision": "b843ff03d4a00a1482c235726f57a303aaa22883",
-			"revisionTime": "2017-09-18T08:02:29Z"
+			"revision": "26b2dac9b669dd5c130550dfe0f76b6714dfebe1",
+			"revisionTime": "2017-09-18T11:38:17Z"
 		},
 		{
 			"checksumSHA1": "bu3TUas4vsPjIgv919gHxlXT+YE=",
 			"path": "github.com/qframe/types/helper",
-			"revision": "b843ff03d4a00a1482c235726f57a303aaa22883",
-			"revisionTime": "2017-09-18T08:02:29Z"
+			"revision": "26b2dac9b669dd5c130550dfe0f76b6714dfebe1",
+			"revisionTime": "2017-09-18T11:38:17Z"
 		},
 		{
-			"checksumSHA1": "LSkAt8eFQeRT+gGamnZDOiwYQNs=",
+			"checksumSHA1": "aYjsG0MFHOGuXk7BcR+UWvW8Vf8=",
 			"path": "github.com/qframe/types/messages",
-			"revision": "b843ff03d4a00a1482c235726f57a303aaa22883",
-			"revisionTime": "2017-09-18T08:02:29Z"
+			"revision": "26b2dac9b669dd5c130550dfe0f76b6714dfebe1",
+			"revisionTime": "2017-09-18T11:38:17Z"
 		},
 		{
 			"checksumSHA1": "TegZuzgQuJzeyuMEEL7oSntDp2A=",
 			"path": "github.com/qframe/types/plugin",
-			"revision": "b843ff03d4a00a1482c235726f57a303aaa22883",
-			"revisionTime": "2017-09-18T08:02:29Z"
+			"revision": "26b2dac9b669dd5c130550dfe0f76b6714dfebe1",
+			"revisionTime": "2017-09-18T11:38:17Z"
 		},
 		{
 			"checksumSHA1": "bI9DmB1P2XfVkog5EvRu01AZ4Uc=",
 			"path": "github.com/qframe/types/qchannel",
-			"revision": "b843ff03d4a00a1482c235726f57a303aaa22883",
-			"revisionTime": "2017-09-18T08:02:29Z"
+			"revision": "26b2dac9b669dd5c130550dfe0f76b6714dfebe1",
+			"revisionTime": "2017-09-18T11:38:17Z"
 		},
 		{
 			"checksumSHA1": "aWT8tf2NLTwFLrrTSEZCraccjMI=",
 			"path": "github.com/qframe/types/ticker",
-			"revision": "b843ff03d4a00a1482c235726f57a303aaa22883",
-			"revisionTime": "2017-09-18T08:02:29Z"
+			"revision": "26b2dac9b669dd5c130550dfe0f76b6714dfebe1",
+			"revisionTime": "2017-09-18T11:38:17Z"
 		},
 		{
 			"checksumSHA1": "WdOalEY1OLMxWKklnv7RjCSypYU=",

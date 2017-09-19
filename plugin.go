@@ -14,6 +14,7 @@ import (
 	"github.com/zpatrick/go-config"
 	"github.com/qframe/types/messages"
 	"io"
+	"bufio"
 )
 
 const (
@@ -94,10 +95,15 @@ func (p *Plugin) Run() {
 			switch msg.(type) {
 			case IncommingMsg:
 				im := msg.(IncommingMsg)
-				base := qtypes_messages.NewTimedBase(p.Name, time.Now())
-				qm := qtypes_messages.NewMessage(base, im.Msg)
-				qm.Tags["host"] = im.Host
-				go p.HandleInventoryRequest(qm)
+				var b bytes.Buffer
+				b.WriteString(im.Msg)
+				scanner := bufio.NewScanner(&b)
+				for scanner.Scan() {
+					base := qtypes_messages.NewTimedBase(p.Name, time.Now())
+					qm := qtypes_messages.NewMessage(base, scanner.Text())
+					qm.Tags["host"] = im.Host
+					go p.HandleInventoryRequest(qm)
+				}
 			default:
 				p.Log("warn", fmt.Sprintf("Unkown data type: %s", reflect.TypeOf(msg)))
 			}
